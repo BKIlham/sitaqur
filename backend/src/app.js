@@ -6,6 +6,8 @@ import prisma from "./config/database.js";
 import redis from "./config/redis.js";
 import requestId from "./utils/requestId.js";
 import logger, { morganStream } from "./utils/logger.js";
+import errorHandler from "./middleware/errorHandler.js";
+import ApiError from "./utils/ApiError.js";
 
 const app = express();
 
@@ -26,15 +28,15 @@ app.get('/', (req, res)=>{
 });
 
 
-(async () => {
-  const test = await prisma.test.create({
-    data: { name: "Hello Prisma" }
-  });
-  console.log(test);
-})();
-(async () => {
+// (async () => {
+//   const test = await prisma.test.create({
+//     data: { name: "Hello Prisma" }
+//   });
+//   console.log(test);
+// })();
+// (async () => {
   
-})();
+// })();
 
 app.get("/test-redis", async (req,res) => {
   try {
@@ -45,5 +47,11 @@ app.get("/test-redis", async (req,res) => {
     req.status(500).json({error: error.message})
   }
 })
+
+app.get("/error-test", (req,res,next) => {
+  next(new ApiError(400, "Contoh Error Bad Request"))
+})
+
+app.use(errorHandler);
 
 export default app;
