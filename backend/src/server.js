@@ -7,14 +7,14 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    logger.info("🚀 Server is running on port ", PORT);
+  logger.info("🚀 Server is running on port ", PORT);
 });
 
 process.on("unhandledRejection", (reason) => {
-    logger.error("Unhandled Rejection", { reason });
+  logger.error("Unhandled Rejection", { reason });
 });
 
 process.on("uncaughtException", (err) => {
-    logger.error("Uncaught Exception", { message: err.message, stack: err.stack });
-    process.exit(1);
+  logger.error("Uncaught Exception", { message: err.message, stack: err.stack });
+  process.exit(1);
 });
