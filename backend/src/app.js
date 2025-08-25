@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import helmet from "helmet";
+import compression from "compression";
 
 import prisma from "./config/database.js";
 import redis from "./config/redis.js";
@@ -15,6 +17,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//security middleware
+app.use(helmet());
+app.use(compression());
+app.use(cors({
+  origin: process.env.CLIENT_URL || "*",
+  credentials: true
+}));
+
+//logging
 app.use(requestId);
 morgan.token("id", (req) => req.id);
 const httpFormat = ':id :method :url :status - :response-time ms';
